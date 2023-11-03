@@ -2,9 +2,7 @@ from gameboard import GameBoard
 
 SIZE = 3 # Size of gameboard being played
 
-# TODO: Lay out a player turn (How to select row and column?)
-# TODO: Determine how AI player functions (Random? Strategy?)
-# TODO: Write check_for_win method (needs to account for diagonal and verticals)
+
 
 
 def check_for_win():
