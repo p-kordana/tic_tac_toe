@@ -1,25 +1,12 @@
+from gamebrain import GameBrain
 from gameboard import GameBoard
+from player import Player
 
 SIZE = 3 # Size of gameboard being played
+PLAYERS = 2 # Number of players playing. Max 4
 
 
-
-
-def check_for_win():
-    """
-    Diagonal wins can only be from corner to corner (Check both diagonals)
-        0x0, 1x1, 2x2 | 0x2, 1x1, 2x0
-    Vertical wins when same value in a single Column (Loop check all columns)
-        0x0, 1x0, 2x0 | 0x1, 1x1, 2x1 | 0x2, 1x2, 2x2
-    Horizontal wins when same value in a single Row (Loop check all rows)
-        0x0, 0x1, 0x2 | 1x0, 1x1, 1x2 | 2x0, 2x1, 2x2
-    False on first value difference when checking
-    """
-    
-    pass
-
-
-def player_turn():
+def player_turn(player:Player):
     """
     player_turn handles the steps and choices carried out for each player turn
     """
@@ -30,11 +17,21 @@ def play_game(enableAI:bool):
     """
     play_game initializes a new GameBoard object and begins the gameplay loop anew
     """
-    game_over = False
+    brain = GameBrain()
 
+    game_over = False
+    players = brain.init_players(PLAYERS)
+    turn = 1
     while not game_over:
         game_board = GameBoard(SIZE)
         game_board.print_game()
+
+
+
+        player_turn(players[1+turn])
+
+        # TODO: need to come up with turn rotation method. Maybe a double loop with inner looping players array
+        turn += (1*-1)
 
         game_over = True
 

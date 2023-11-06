@@ -7,6 +7,7 @@ Tic Tac Toe
 - [Overview](#overview)
 - [Directory Structure](#directory-structure)
 - [Installation](#installation)
+- [Planning](#planning)
 
 ## Overview
 
