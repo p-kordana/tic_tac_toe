@@ -1,12 +1,15 @@
 from player import Player
 
+# the allowed player symbols
 symbols = ['X','O','|','-']
 
 class GameBrain:
+    players = [Player]
     def __init__(self) -> None:
-        self.players = [Player]
+        global players
+        players = [Player]
 
-    def init_players(self, count:int)->[Player]:
+    def init_players(self, count:int):
         for i in range(count):
-            self.players.append(Player(symbols[i]))
-        return self.players
+            print(i)
+            players.append(Player(symbols[i]))

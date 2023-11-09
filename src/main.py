@@ -10,7 +10,18 @@ def player_turn(player:Player):
     """
     player_turn handles the steps and choices carried out for each player turn
     """
-    pass
+    print(f'Player {player.marker} turn')
+    # TODO: Add a loop with integer checking on both row and col
+    try: 
+        row = int(input('Select a row: '))
+    except:
+        pass
+
+    try:
+        col = int(input('Select a column: '))
+    except:
+        pass
+
 
 
 def play_game(enableAI:bool):
@@ -20,18 +31,14 @@ def play_game(enableAI:bool):
     brain = GameBrain()
 
     game_over = False
-    players = brain.init_players(PLAYERS)
-    turn = 1
+    brain.init_players(PLAYERS)
+    game_board = GameBoard(SIZE)
+
     while not game_over:
-        game_board = GameBoard(SIZE)
         game_board.print_game()
 
-
-
-        player_turn(players[1+turn])
-
-        # TODO: need to come up with turn rotation method. Maybe a double loop with inner looping players array
-        turn += (1*-1)
+        for player in brain.players:
+            player_turn(player)
 
         game_over = True
 

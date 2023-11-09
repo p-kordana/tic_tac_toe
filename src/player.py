@@ -1,6 +1,9 @@
 class Player:
+    marker = ''
+
     def __init__(self, symbol) -> None:
-        self.symbol = symbol
+        global marker
+        marker = symbol
         self.wins = 0
 
     def add_win(self):
