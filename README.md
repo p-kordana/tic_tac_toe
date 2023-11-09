@@ -47,6 +47,4 @@ Repeat turns until a win condition rings true
 
 ### TODO
 
-Lay out a player turn (How to select row and column?)  
-Determine how AI player functions (Random? Strategy?)  
-Write check_for_win method (needs to account for diagonal and verticals)  
+Complete a working Singlefile version before improving with multiple classes
