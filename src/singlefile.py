@@ -1,29 +1,41 @@
-SIZE = 3 # Game board size (can be adjusted)
+SIZE = 4 # Game board size (can be adjusted)
 
 # Create GAMEBOARD and PLAYERS lists
 GAMEBOARD = [[' ' for _ in range(SIZE)] for _ in range(SIZE)]
 PLAYERS = [
     {
-        "name": "Player 1",
+        "name": "Player X",
         "symbol": "X",
         "wins": 0
     },
     {
-        "name": "Player 2",
+        "name": "Player O",
         "symbol": "O",
         "wins": 0
     }
 ]
 
+def init_gameboard():
+    """Clears GAMEBOARD
+    """
+    global GAMEBOARD
+    GAMEBOARD = [[' ' for _ in range(SIZE)] for _ in range(SIZE)]
+
 def print_gameboard():
-    output_string = f'-{"----" * SIZE}\n'  # Append top line
+    output_string = f'-{"----" * SIZE}\n'  
     for r in GAMEBOARD:
-        output_string += '|'  # Append vertical line before each row
+        output_string += '|'  
         for c in r:
-            output_string += f' {c} |'  # Pad spaces around each col value
-        output_string += f'\n-{"----" * SIZE}\n'  # Append row underlines
+            output_string += f' {c} |'  
+        output_string += f'\n-{"----" * SIZE}\n'  
     print(output_string)
 
+
+def print_score(players):
+    print("------------------")
+    for p in players:
+        print(f'{p["name"]}: {p["wins"]}')
+    print("------------------")
 
 def evaluate_selection(row:int, col:int)->bool:
     if GAMEBOARD[row-1][col-1] == ' ':
@@ -36,36 +48,39 @@ def mark_selection(row:int, col:int, symbol:str):
     GAMEBOARD[row-1][col-1] = symbol
 
 
-def check_for_win(symbol:str)->bool:
-    """
-    Diagonal wins can only be from corner to corner (Check both diagonals)
-        0x0, 1x1, 2x2 | 0x2, 1x1, 2x0
-    Vertical wins when same value in a single Column (Loop check all columns)
-        0x0, 1x0, 2x0 | 0x1, 1x1, 2x1 | 0x2, 1x2, 2x2
-    Horizontal wins when same value in a single Row (Loop check all rows)
-        0x0, 0x1, 0x2 | 1x0, 1x1, 1x2 | 2x0, 2x1, 2x2
-    False on first value difference when checking
-    """
+def check_for_draw()->bool:
     ctr = 0
-    win = False
-    # Check diagonal where x = y
+    for r in GAMEBOARD:
+        for c in r:
+            if c > " ":
+                ctr += 1
+    if ctr == (SIZE*SIZE):
+        return True
+    return False
+
+
+def check_for_win(symbol:str)->bool:
+    ctr = 0
+    # Check diagonal where x = y Ex: 0x0, 1x1, 2x2
     for x in range(SIZE):
-        ctr = 0
         c = GAMEBOARD[x][x]
         if c == symbol:
             ctr += 1
+        else:
+            pass
     if ctr == SIZE:
-        win = True
-        return
-    # Check diagnol where y = -(x+1)
+        return True
+    
+    ctr = 0
+    # Check diagnol where y = SIZE-(x+1) Ex: 0x2, 1x1, 2x0
     for x in range(SIZE):
-        ctr = 0
-        c = GAMEBOARD[x][-(x+1)]
+        c = GAMEBOARD[x][SIZE-(x+1)]
         if c == symbol:
             ctr += 1
+        else:
+            pass
     if ctr == SIZE:
-        win = True
-        return
+        return True
 
     # Check verticals
     for v in range(SIZE):
@@ -75,8 +90,7 @@ def check_for_win(symbol:str)->bool:
             if c == symbol:
                 ctr += 1
         if ctr == SIZE:
-            win = True
-            return
+            return True
 
     # Check horizontals
     for h in range(SIZE):
@@ -86,34 +100,53 @@ def check_for_win(symbol:str)->bool:
             if c == symbol:
                 ctr += 1
         if ctr == SIZE:
-            win = True
-            return
-    if win:
-        print(f'Player "{symbol}" wins!')
+            return True
+        
+    return False
 
-    return win
-
+done_playing = False
 game_over = False
 
-while not game_over:
-    for player in PLAYERS:
-        if not game_over:
-            print_gameboard()
-            # Load name and symbol into variables for easier references
-            pn = player['name']
-            ps = player['symbol']
+while not done_playing:
+    while not game_over:
+        for player in PLAYERS:
+            if not game_over:
+                print_gameboard()
+                # Load name and symbol into variables for easier references
+                pn = player['name']
+                ps = player['symbol']
 
-            print(f"{pn}'s turn.")
-            row = input('Select row: ')
-            col = input('Select column: ')
-            # Loop continues until player makes valid row & column selection
-            while not evaluate_selection(int(row), int(col)):
-                print(f'Invalid selection. {pn} Try again.')
+                print(f"{pn}'s turn.")
                 row = input('Select row: ')
                 col = input('Select column: ')
-            row = int(row)
-            col = int(col)
-            mark_selection(row, col, ps)
-            game_over = check_for_win(ps)
+                # Loop continues until player makes valid row & column selection
+                while not evaluate_selection(int(row), int(col)):
+                    print(f'Invalid selection. {pn} Try again.')
+                    row = input('Select row: ')
+                    col = input('Select column: ')
+                row = int(row)
+                col = int(col)
+                mark_selection(row, col, ps)
+                player_wins = check_for_win(ps)
+                if player_wins:
+                    print_gameboard()
+                    player['wins'] += 1
+                    print(f'{pn} wins!'.upper())
+                    print_score(PLAYERS)
+                    game_over = True
+                else: 
+                    if check_for_draw():
+                        print_gameboard()
+                        print('No moves left. Draw!')
+                        game_over = True
+
+    ans = ''
+    while not ans in ['Y','N']:
+        ans = input('Play again? Y or N: ').upper()
+    if ans == 'N':
+        done_playing = True
+    else:
+        init_gameboard()
+        game_over = False
 
 

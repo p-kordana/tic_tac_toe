@@ -36,15 +36,18 @@ Players take turns selecting a cell to mark.
 Complete a line (diagonal, vertical, or horizontal) to win  
 
 ### Game Loop
-Create fresh board  
-Select AI or Human for PLayer 2  
+Empty game board created  
 Player 1 takes turn  
-Check for win condition after each turn  
+Check for win or draw  
 Player 2 takes turn  
-Check for win condition after each turn  
-Repeat turns until a win condition rings true  
-
+Check for win or draw  
+Repeat turns until a win or draw  
+Print scores  
+Ask to replay  
+If Y restart loop  
+If N exit program  
 
 ### TODO
 
-Complete a working Singlefile version before improving with multiple classes
+Add error checking for non integer entries  
+Build v2 after some refactoring  
