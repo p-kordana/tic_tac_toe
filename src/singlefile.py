@@ -22,12 +22,15 @@ def init_gameboard():
     GAMEBOARD = [[' ' for _ in range(SIZE)] for _ in range(SIZE)]
 
 def print_gameboard():
-    output_string = f'-{"----" * SIZE}\n'  
-    for r in GAMEBOARD:
-        output_string += '|'  
-        for c in r:
+    output_string = '   |'
+    for x in range(SIZE):
+        output_string += f' {x+1} |'
+    output_string += f'\n----{"----" * SIZE}\n'  
+    for r in range(SIZE):
+        output_string += f' {r+1} |'  
+        for c in GAMEBOARD[r]:
             output_string += f' {c} |'  
-        output_string += f'\n-{"----" * SIZE}\n'  
+        output_string += f'\n----{"----" * SIZE}\n'  
     print(output_string)
 
 
