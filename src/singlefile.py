@@ -120,15 +120,46 @@ while not done_playing:
                 ps = player['symbol']
 
                 print(f"{pn}'s turn.")
-                row = input('Select row: ')
-                col = input('Select column: ')
+
+                try_again = True
                 # Loop continues until player makes valid row & column selection
-                while not evaluate_selection(int(row), int(col)):
-                    print(f'Invalid selection. {pn} Try again.')
-                    row = input('Select row: ')
-                    col = input('Select column: ')
-                row = int(row)
-                col = int(col)
+                while try_again:
+                    row_not_int = True
+                    while row_not_int:
+                        try:
+                            # Try to convert user input to an integer
+                            row = input('Select row: ')
+                            row = int(row)
+                        except ValueError:
+                            # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
+                            print("Invalid input. Please enter a valid integer.")
+                        else:
+                            if row in range(1,5):
+                                # If no exception break out of loop
+                                row_not_int = False
+                            else:
+                                print(f'Invalid input. Must be between 1 and {SIZE}.')
+
+                    col_not_int = True
+                    while col_not_int:
+                        try:
+                            # Try to convert user input to an integer
+                            col = input('Select column: ')
+                            col = int(col)
+                        except ValueError:
+                            # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
+                            print("Invalid input. Please enter a valid integer.")
+                        else:
+                            if col in range(1,5):
+                                # If no exception break out of loop
+                                col_not_int = False
+                            else:
+                                print(f'Invalid input. Must be between 1 and {SIZE}.')
+
+                    try_again = not evaluate_selection(row, col)
+                    if try_again:
+                        print("Invalid selection. Try again.")
+
                 mark_selection(row, col, ps)
                 player_wins = check_for_win(ps)
                 if player_wins:
@@ -148,6 +179,7 @@ while not done_playing:
         ans = input('Play again? Y or N: ').upper()
     if ans == 'N':
         done_playing = True
+        print_score(PLAYERS)
     else:
         init_gameboard()
         game_over = False
