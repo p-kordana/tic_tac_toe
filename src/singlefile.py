@@ -1,4 +1,4 @@
-SIZE = 4 # Game board size (can be adjusted)
+SIZE = 3 # Game board size (can be adjusted)
 
 # Create GAMEBOARD and PLAYERS lists
 GAMEBOARD = [[' ' for _ in range(SIZE)] for _ in range(SIZE)]
@@ -134,7 +134,7 @@ while not done_playing:
                             # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
                             print("Invalid input. Please enter a valid integer.")
                         else:
-                            if row in range(1,5):
+                            if row in range(1,SIZE+1):
                                 # If no exception break out of loop
                                 row_not_int = False
                             else:
@@ -150,7 +150,7 @@ while not done_playing:
                             # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
                             print("Invalid input. Please enter a valid integer.")
                         else:
-                            if col in range(1,5):
+                            if col in range(1,SIZE+1):
                                 # If no exception break out of loop
                                 col_not_int = False
                             else:
@@ -166,7 +166,6 @@ while not done_playing:
                     print_gameboard()
                     player['wins'] += 1
                     print(f'{pn} wins!'.upper())
-                    print_score(PLAYERS)
                     game_over = True
                 else: 
                     if check_for_draw():
@@ -178,10 +177,13 @@ while not done_playing:
     while not ans in ['Y','N']:
         ans = input('Play again? Y or N: ').upper()
     if ans == 'N':
+        # If done playing set bool to break loop and print final scores
         done_playing = True
         print_score(PLAYERS)
     else:
+        # Else re-init the gameboard and unset game over bool to continue game loop
         init_gameboard()
         game_over = False
+        print(f'\n') # Add new line for next game
 
 
