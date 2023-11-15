@@ -19,7 +19,9 @@ Just a simple Python text-based Tic Tac Toe game.
 Should ignore all Python as well as any Pycharm or VSCode related files.
 
 ### `src/`
-Source code files.
+Source code files.  
+singlefile.py is a fully working Tic Tac Toe game in one python file.  
+v2/ is a Work in Progress.  
 
 ## Installation
 
@@ -41,13 +43,13 @@ Player 1 takes turn
 Check for win or draw  
 Player 2 takes turn  
 Check for win or draw  
-Repeat turns until a win or draw  
+Repeat both player turns in order until a win or draw is met  
 Print scores  
 Ask to replay  
 If Y restart loop  
 If N exit program  
 
 ### TODO
-
-Add error checking for non integer entries  
-Build v2 after some refactoring  
+Refactor and comment
+Begin work on V2 with multiple classes  
+Come up with plan for AI player 
