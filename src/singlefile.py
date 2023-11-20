@@ -1,7 +1,8 @@
-SIZE = 3 # Game board size (can be adjusted)
+# Game board size (can be adjusted) 
+# Note that SIZE > 3 becomes much harder for players to win.
+SIZE = 3
 
 # Create GAMEBOARD and PLAYERS lists
-GAMEBOARD = [[' ' for _ in range(SIZE)] for _ in range(SIZE)]
 PLAYERS = [
     {
         "name": "Player X",
@@ -15,13 +16,22 @@ PLAYERS = [
     }
 ]
 
-def init_gameboard():
-    """Clears GAMEBOARD
+def init_gameboard(size:int)->bool:
     """
-    global GAMEBOARD
-    GAMEBOARD = [[' ' for _ in range(SIZE)] for _ in range(SIZE)]
+    Clears global GAMEBOARD variable
+    """
+    if size < 3:
+        print('SIZE provided was too small. Minimum is 3.\nExiting game. Correct the size and try again.')
+        return False
+    else:
+        global GAMEBOARD
+        GAMEBOARD = [[' ' for _ in range(size)] for _ in range(size)]
+        return True
 
 def print_gameboard():
+    """
+    Prints text represenation of the global GAMEBOARD array to stdout
+    """
     output_string = '   |'
     for x in range(SIZE):
         output_string += f' {x+1} |'
@@ -35,12 +45,62 @@ def print_gameboard():
 
 
 def print_score(players):
+    """
+    Prints text scoreboard for player wins
+    """
     print("------------------")
     for p in players:
         print(f'{p["name"]}: {p["wins"]}')
     print("------------------")
 
+
+def select_row()->int:
+    """
+    Evaluates player row selection and returns int once complete.
+    """
+    row_not_int = True
+    while row_not_int:
+        try:
+            # Try to convert user input to an integer
+            row = input('Select row: ')
+            row = int(row)
+        except ValueError:
+            # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
+            print("Invalid input. Please enter a valid integer.")
+        else:
+            if row in range(1,SIZE+1):
+                # If no exception break out of loop
+                row_not_int = False
+            else:
+                print(f'Invalid input. Must be between 1 and {SIZE}.')
+    return row
+
+def select_col()->int:
+    """
+    Evaluates player col selection and returns int once complete.
+    """
+    col_not_int = True
+    while col_not_int:
+        try:
+            # Try to convert user input to an integer
+            col = input('Select column: ')
+            col = int(col)
+        except ValueError:
+            # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
+            print("Invalid input. Please enter a valid integer.")
+        else:
+            if col in range(1,SIZE+1):
+                # If no exception break out of loop
+                col_not_int = False
+            else:
+                print(f'Invalid input. Must be between 1 and {SIZE}.')
+    return col
+
 def evaluate_selection(row:int, col:int)->bool:
+    """
+    Evaluates selected cell and returns false if not valid.\n
+    This is only used after select_row() and select_col() have evaluated selection within the board.
+    """
     if GAMEBOARD[row-1][col-1] == ' ':
         return True
     else: 
@@ -48,10 +108,17 @@ def evaluate_selection(row:int, col:int)->bool:
     
 
 def mark_selection(row:int, col:int, symbol:str):
+    """
+    Adds player symbol in the evaluated, selected, cell.
+    """
     GAMEBOARD[row-1][col-1] = symbol
 
 
 def check_for_draw()->bool:
+    """
+    Returns True if no free cells left aka. draw condition.
+    Assumes that you have already evaluated for a win condition.
+    """
     ctr = 0
     for r in GAMEBOARD:
         for c in r:
@@ -69,8 +136,6 @@ def check_for_win(symbol:str)->bool:
         c = GAMEBOARD[x][x]
         if c == symbol:
             ctr += 1
-        else:
-            pass
     if ctr == SIZE:
         return True
     
@@ -80,8 +145,6 @@ def check_for_win(symbol:str)->bool:
         c = GAMEBOARD[x][SIZE-(x+1)]
         if c == symbol:
             ctr += 1
-        else:
-            pass
     if ctr == SIZE:
         return True
 
@@ -111,6 +174,11 @@ done_playing = False
 game_over = False
 
 while not done_playing:
+
+    if not init_gameboard(SIZE):
+        game_over = True
+        break
+
     while not game_over:
         for player in PLAYERS:
             if not game_over:
@@ -124,37 +192,8 @@ while not done_playing:
                 try_again = True
                 # Loop continues until player makes valid row & column selection
                 while try_again:
-                    row_not_int = True
-                    while row_not_int:
-                        try:
-                            # Try to convert user input to an integer
-                            row = input('Select row: ')
-                            row = int(row)
-                        except ValueError:
-                            # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
-                            print("Invalid input. Please enter a valid integer.")
-                        else:
-                            if row in range(1,SIZE+1):
-                                # If no exception break out of loop
-                                row_not_int = False
-                            else:
-                                print(f'Invalid input. Must be between 1 and {SIZE}.')
-
-                    col_not_int = True
-                    while col_not_int:
-                        try:
-                            # Try to convert user input to an integer
-                            col = input('Select column: ')
-                            col = int(col)
-                        except ValueError:
-                            # If a ValueError occurs (e.g., if the input is not a valid integer), handle it here
-                            print("Invalid input. Please enter a valid integer.")
-                        else:
-                            if col in range(1,SIZE+1):
-                                # If no exception break out of loop
-                                col_not_int = False
-                            else:
-                                print(f'Invalid input. Must be between 1 and {SIZE}.')
+                    row = select_row()
+                    col = select_col()
 
                     try_again = not evaluate_selection(row, col)
                     if try_again:
@@ -181,8 +220,7 @@ while not done_playing:
         done_playing = True
         print_score(PLAYERS)
     else:
-        # Else re-init the gameboard and unset game over bool to continue game loop
-        init_gameboard()
+        # Else unset game over bool to continue game loop
         game_over = False
         print(f'\n') # Add new line for next game
 
