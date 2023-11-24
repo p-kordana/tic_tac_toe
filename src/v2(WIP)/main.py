@@ -3,7 +3,7 @@ from gameboard import GameBoard
 from player import Player
 
 SIZE = 3 # Size of gameboard being played
-PLAYERS = 2 # Number of players playing. Max 4
+PLAYERS = 2 # Number of players playing. 
 
 
 def player_turn(player:Player):

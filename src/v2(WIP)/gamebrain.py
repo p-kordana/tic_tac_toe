@@ -1,15 +1,28 @@
 from player import Player
 
-# the allowed player symbols
-symbols = ['X','O','|','-']
-
 class GameBrain:
-    players = [Player]
+    """
+    GameBrain object;
+    Manages players in array.
+    Handles player setup with symbol selection.
+    Keeps track of current player turn.
+    """
     def __init__(self) -> None:
-        global players
-        players = [Player]
+        self.players = [Player]
+        self.symbols = []
 
-    def init_players(self, count:int):
+    def init_players(self):
+
+        count = input("How many players? Min 2, Max 4.")
+        while not count in ['2','3','4']:
+            print("Invalid input. Min 2, Max 4.")
+            count = input("How many players?")
+        count = int(count)
+
         for i in range(count):
-            print(i)
-            players.append(Player(symbols[i]))
+            symbol = input(f"Player {i+1}. Select symbol")
+            while symbol in self.symbols:
+                print("Symbol already in use. Enter another.")
+                symbol = input(f"Player {i+1}. Select symbol")
+            self.symbols.append(symbol)
+            self.players.append(Player(symbol))
